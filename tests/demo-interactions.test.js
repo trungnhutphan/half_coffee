@@ -17,6 +17,18 @@ async function startDemo() {
   return { controller, document: dom.window.document, runtimeErrors };
 }
 
+async function startWebMcpDemo() {
+  const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+  const dom = new JSDOM(html, { url: 'http://ka-pods.local/' });
+  const tools = [];
+  Object.defineProperty(dom.window.document, 'modelContext', {
+    value: { registerTool: (tool) => tools.push(tool) },
+    configurable: true,
+  });
+  const controller = bootstrap(dom.window.document);
+  return { controller, document: dom.window.document, tools };
+}
+
 function click(document, selector) {
   const element = document.querySelector(selector);
   assert.ok(element, `missing ${selector}`);
@@ -35,6 +47,20 @@ test('five accessible tabs switch the visible app panel', async () => {
   assert.equal(document.querySelector('[role="tabpanel"]')?.dataset.screenPanel, 'rewards');
   assert.equal(document.querySelector('[data-screen="rewards"]')?.getAttribute('aria-selected'), 'true');
   assert.deepEqual(runtimeErrors, []);
+});
+
+test('app tabs support arrow Home and End keyboard navigation', async () => {
+  const { document } = await startDemo();
+  const window = document.defaultView;
+  const homeTab = document.querySelector('[data-screen="home"]');
+
+  homeTab.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+  assert.equal(document.querySelector('[role="tabpanel"]')?.dataset.screenPanel, 'rewards');
+  assert.equal(document.activeElement?.dataset.screen, 'rewards');
+
+  document.activeElement.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+  assert.equal(document.querySelector('[role="tabpanel"]')?.dataset.screenPanel, 'account');
+  assert.equal(document.activeElement?.dataset.screen, 'account');
 });
 
 test('claiming a laundry reward updates the balance once and announces it', async () => {
@@ -86,4 +112,42 @@ test('language preference updates visibly and announces the change', async () =>
   assert.equal(controller.getState().language, 'en');
   assert.equal(document.querySelector('[data-current-language]')?.textContent.trim(), 'English');
   assert.match(document.querySelector('#demo-status')?.textContent ?? '', /English/);
+});
+
+test('WebMCP tools reuse visible reward voucher and store journeys', async () => {
+  const { controller, document, tools } = await startWebMcpDemo();
+
+  assert.deepEqual(tools.map(({ name }) => name), [
+    'claim_laundry_reward',
+    'save_voucher',
+    'search_store_locations',
+  ]);
+
+  const claimResult = await tools[0].execute({});
+  assert.deepEqual(claimResult, { status: 'claimed', points: 4466 });
+  assert.equal(document.querySelector('#points-balance')?.textContent.trim(), '4.466');
+
+  const saveResult = await tools[1].execute({ voucherId: 'fresh-50' });
+  assert.deepEqual(saveResult, { status: 'saved', voucherId: 'fresh-50' });
+  assert.equal(document.querySelector('[data-voucher-id="fresh-50"]')?.textContent.trim(), 'Đã lưu');
+
+  const storeResult = await tools[2].execute({ query: 'ho chi minh' });
+  assert.deepEqual(storeResult, { count: 2, query: 'ho chi minh' });
+  assert.equal(document.querySelectorAll('[data-store-result]').length, 2);
+
+  const beforeInvalid = controller.getState();
+  await assert.rejects(() => tools[1].execute({ voucherId: 'missing' }), /voucherId/);
+  assert.deepEqual(controller.getState(), beforeInvalid);
+});
+
+test('top links scroll to the absolute page top around the sticky header', async () => {
+  const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+  const dom = new JSDOM(html, { url: 'http://ka-pods.local/' });
+  let scrollOptions;
+  dom.window.scrollTo = (options) => { scrollOptions = options; };
+  bootstrap(dom.window.document);
+
+  dom.window.document.querySelector('.site-footer a[href="#top"]').click();
+
+  assert.deepEqual(scrollOptions, { top: 0, behavior: 'smooth' });
 });

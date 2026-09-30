@@ -52,6 +52,23 @@ export function bootstrap(document) {
     }
   });
 
+  phone.addEventListener('keydown', (event) => {
+    const tab = event.target.closest('[role="tab"][data-screen]');
+    if (!tab || !['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
+
+    event.preventDefault();
+    const currentIndex = APP_SCREENS.findIndex(({ id }) => id === tab.dataset.screen);
+    let nextIndex = currentIndex;
+    if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % APP_SCREENS.length;
+    if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + APP_SCREENS.length) % APP_SCREENS.length;
+    if (event.key === 'Home') nextIndex = 0;
+    if (event.key === 'End') nextIndex = APP_SCREENS.length - 1;
+
+    const nextScreen = APP_SCREENS[nextIndex];
+    update({ ...state, activeScreen: nextScreen.id }, `Đã mở ${nextScreen.label}.`);
+    document.querySelector(`[role="tab"][data-screen="${nextScreen.id}"]`)?.focus();
+  });
+
   phone.addEventListener('submit', (event) => {
     const form = event.target.closest('[data-action="search-stores"]');
     if (!form) return;
@@ -72,12 +89,97 @@ export function bootstrap(document) {
 
     event.preventDefault();
     const reducedMotion = document.defaultView.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    const behavior = reducedMotion ? 'auto' : 'smooth';
+    if (link.getAttribute('href') === '#top' && typeof document.defaultView.scrollTo === 'function') {
+      document.defaultView.scrollTo({ top: 0, behavior });
+      return;
+    }
     if (typeof target.scrollIntoView === 'function') {
-      target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+      target.scrollIntoView({ behavior, block: 'start' });
     }
   });
 
+  registerWebMcpTools(document, {
+    claimReward() {
+      const nextState = claimLaundryReward(state);
+      if (nextState === state) return { status: 'already_claimed', points: state.points };
+      update(nextState, 'Đã nhận 120 điểm cho lần giặt hôm nay.');
+      return { status: 'claimed', points: state.points };
+    },
+    saveVoucher(voucherId) {
+      if (!VOUCHERS.some(({ id }) => id === voucherId)) {
+        throw new TypeError('voucherId must identify an available voucher');
+      }
+      const nextState = redeemVoucher(state, voucherId);
+      if (nextState === state) return { status: 'already_saved', voucherId };
+      update({ ...nextState, activeScreen: 'vouchers' }, `Đã lưu voucher ${voucherId}.`);
+      return { status: 'saved', voucherId };
+    },
+    searchStoreLocations(query) {
+      if (typeof query !== 'string' || query.trim().length === 0 || query.length > 80) {
+        throw new TypeError('query must be a non-empty string up to 80 characters');
+      }
+      const normalizedQuery = query.trim();
+      update({ ...state, activeScreen: 'stores', storeQuery: normalizedQuery });
+      const count = document.querySelectorAll('[data-store-result]').length;
+      announce(count ? `Tìm thấy ${count} điểm bán.` : 'Chưa tìm thấy điểm bán phù hợp.');
+      return { count, query: normalizedQuery };
+    },
+  });
+
   return { getState: () => state };
+}
+
+function registerWebMcpTools(document, actions) {
+  const context = document.modelContext;
+  if (!context?.registerTool) return;
+
+  const tools = [
+    {
+      name: 'claim_laundry_reward',
+      title: 'Nhận điểm giặt',
+      description: 'Complete the visible KA Pods demo action that claims today\'s laundry reward once.',
+      inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+      annotations: { readOnlyHint: false, untrustedContentHint: false },
+      execute: async () => actions.claimReward(),
+    },
+    {
+      name: 'save_voucher',
+      title: 'Lưu voucher',
+      description: 'Save one available KA Pods voucher and show it in the visible voucher wallet.',
+      inputSchema: {
+        type: 'object',
+        properties: { voucherId: { type: 'string', enum: VOUCHERS.map(({ id }) => id) } },
+        required: ['voucherId'],
+        additionalProperties: false,
+      },
+      annotations: { readOnlyHint: false, untrustedContentHint: false },
+      execute: async (input) => actions.saveVoucher(input?.voucherId),
+    },
+    {
+      name: 'search_store_locations',
+      title: 'Tìm điểm bán',
+      description: 'Search the demo KA Pods store list and show matching locations in the visible app.',
+      inputSchema: {
+        type: 'object',
+        properties: { query: { type: 'string', minLength: 1, maxLength: 80 } },
+        required: ['query'],
+        additionalProperties: false,
+      },
+      annotations: { readOnlyHint: true, untrustedContentHint: false },
+      execute: async (input) => actions.searchStoreLocations(input?.query),
+    },
+  ];
+
+  tools.forEach((tool) => {
+    try {
+      void Promise.resolve(context.registerTool(tool)).catch((error) => {
+        console.warn(`Unable to register WebMCP tool ${tool.name}`, error);
+      });
+    } catch (error) {
+      console.warn(`Unable to register WebMCP tool ${tool.name}`, error);
+    }
+  });
 }
 
 if (typeof document !== 'undefined') {
