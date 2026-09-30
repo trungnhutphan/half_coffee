@@ -50,6 +50,10 @@ export function bootstrap(document) {
       const language = trigger.dataset.language === 'en' ? 'en' : 'vi';
       update({ ...state, language }, language === 'en' ? 'Language changed to English.' : 'Đã đổi ngôn ngữ sang Tiếng Việt.');
     }
+
+    if (action === 'show-demo-notice') {
+      announce(`${trigger.dataset.label} là nội dung minh hoạ trong bản demo.`);
+    }
   });
 
   phone.addEventListener('keydown', (event) => {

@@ -82,8 +82,8 @@ function renderRewards(state) {
     ${rewardButton(state)}
     <div class="app-section-heading"><h4>Đổi quà nổi bật</h4><button type="button" data-action="navigate-screen" data-screen="vouchers">Xem voucher</button></div>
     <div class="reward-list">
-      <article><span class="reward-illustration reward-a">${icon('ticket')}</span><div><h4>Giảm 50.000đ</h4><p>Đơn KA Pods từ 299.000đ</p></div><b>2.000đ</b></article>
-      <article><span class="reward-illustration reward-b">${icon('gift')}</span><div><h4>Túi đựng đồ giặt</h4><p>Quà dành cho hạng KA Plus</p></div><b>3.800đ</b></article>
+      <article><span class="reward-illustration reward-a">${icon('ticket')}</span><div><h4>Giảm 50.000đ</h4><p>Đơn KA Pods từ 299.000đ</p></div><b>2.000 điểm</b></article>
+      <article><span class="reward-illustration reward-b">${icon('gift')}</span><div><h4>Túi đựng đồ giặt</h4><p>Quà dành cho hạng KA Plus</p></div><b>3.800 điểm</b></article>
     </div>
   `;
 }
@@ -169,8 +169,8 @@ function renderAccount(state) {
       </div>
     </div>
     <div class="account-links" aria-label="Tuỳ chọn tài khoản demo">
-      <button type="button"><span>${icon('gift')} Lịch sử nhận điểm</span>${icon('chevron')}</button>
-      <button type="button"><span>${icon('user')} Thông tin thành viên</span>${icon('chevron')}</button>
+      <button type="button" data-action="show-demo-notice" data-label="Lịch sử nhận điểm"><span>${icon('gift')} Lịch sử nhận điểm</span>${icon('chevron')}</button>
+      <button type="button" data-action="show-demo-notice" data-label="Thông tin thành viên"><span>${icon('user')} Thông tin thành viên</span>${icon('chevron')}</button>
     </div>
     <p class="demo-disclaimer">Đây là tài khoản mô phỏng. Không có thông tin cá nhân được lưu.</p>
   `;

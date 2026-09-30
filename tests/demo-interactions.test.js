@@ -114,6 +114,25 @@ test('language preference updates visibly and announces the change', async () =>
   assert.match(document.querySelector('#demo-status')?.textContent ?? '', /English/);
 });
 
+test('account demo options provide visible feedback instead of dead buttons', async () => {
+  const { document } = await startDemo();
+  click(document, '[data-action="navigate-screen"][data-screen="account"]');
+  click(document, '[data-action="show-demo-notice"]');
+
+  assert.match(document.querySelector('#demo-status')?.textContent ?? '', /Lịch sử nhận điểm/);
+  assert.match(document.querySelector('#demo-status')?.textContent ?? '', /bản demo/);
+});
+
+test('reward costs are labelled as points instead of currency', async () => {
+  const { document } = await startDemo();
+  click(document, '[data-action="navigate-screen"][data-screen="rewards"]');
+
+  assert.deepEqual(
+    [...document.querySelectorAll('.reward-list b')].map((cost) => cost.textContent.trim()),
+    ['2.000 điểm', '3.800 điểm'],
+  );
+});
+
 test('WebMCP tools reuse visible reward voucher and store journeys', async () => {
   const { controller, document, tools } = await startWebMcpDemo();
 
