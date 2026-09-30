@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Every Half — trải nghiệm đặt cà phê specialty mô phỏng." />
+    <title>Every Half — Chọn một nửa thật ngon</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell" id="app">
+      <header class="topbar">
+        <a class="wordmark" href="#home" data-action="show-home" aria-label="Every Half, về trang chủ">
+          every<br /><span>half</span>
+        </a>
+        <div class="store-chip">
+          <span class="store-dot" aria-hidden="true"></span>
+          <span><strong>Võ Thị Sáu</strong><small>Đang nhận đơn</small></span>
+        </div>
+        <button class="cart-trigger" id="cart-button" data-action="toggle-cart" type="button" aria-controls="cart-panel" aria-expanded="false">
+          <span aria-hidden="true">☕</span> Giỏ món <b id="cart-count">0</b>
+        </button>
+      </header>
+
+      <main>
+        <section class="home-view view" id="home-view" aria-labelledby="home-title">
+          <div class="home-copy">
+            <p class="season-note">mùa của những nửa ly vừa đủ</p>
+            <h1 id="home-title">Một khoảng<br />nghỉ có vị <em>cà phê.</em></h1>
+            <p class="lead">Chọn món theo nhịp của bạn. Chúng mình pha từ hạt rang vừa, và dành đủ thời gian cho từng ly.</p>
+            <div class="hero-actions">
+              <button class="primary-button" type="button" data-action="show-menu">Chọn món ngay</button>
+              <button class="text-button" type="button" data-action="scroll-story">Câu chuyện hạt cà phê</button>
+            </div>
+          </div>
+          <div class="hero-scene" aria-label="Một ly cà phê kem mây Every Half">
+            <div class="hero-stamp">rang chậm<br />pha kỹ</div>
+            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1000&q=85" alt="Ly cà phê sữa trên bàn gỗ" />
+            <div class="hero-caption"><span>gợi ý hôm nay</span><strong>Cara Melting</strong><small>caramel muối · espresso</small></div>
+          </div>
+        </section>
+
+        <section class="menu-view view" id="menu-view" hidden aria-labelledby="menu-title">
+          <div class="menu-heading">
+            <div>
+              <p class="section-kicker">chọn theo tâm trạng</p>
+              <h2 id="menu-title">Menu hôm nay</h2>
+            </div>
+            <label class="search-box"> <span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Tìm món bạn muốn uống" autocomplete="off" /> </label>
+          </div>
+          <div class="category-tabs" id="category-tabs" aria-label="Danh mục món"></div>
+          <div class="menu-layout">
+            <section class="product-grid" id="menu-grid" aria-live="polite" aria-label="Danh sách món"></section>
+            <aside class="order-ticket inline-ticket" aria-label="Tóm tắt đơn hàng">
+              <div class="ticket-top"><span>đơn của bạn</span><strong id="inline-cart-count">Chưa có món</strong></div>
+              <p id="inline-cart-summary">Một ly thơm sẽ bắt đầu từ đây.</p>
+              <button class="ticket-button" type="button" data-action="toggle-cart">Mở giỏ món</button>
+            </aside>
+          </div>
+        </section>
+
+        <section class="story-view view" id="story-view" hidden aria-labelledby="story-title">
+          <div class="story-mark">EH</div>
+          <div><p class="section-kicker">từ hạt đến nửa ly</p><h2 id="story-title">Cà phê ngon không cần nói quá nhiều.</h2><p>Chúng mình tìm những hạt có câu chuyện rõ ràng, rang đủ sáng để vị nguyên bản còn ở lại, rồi pha theo cách dễ uống mỗi ngày.</p><button class="primary-button" type="button" data-action="show-menu">Khám phá menu</button></div>
+        </section>
+
+        <section class="confirmation-view view" id="confirmation-view" hidden aria-labelledby="confirmation-title">
+          <div class="confirmation-icon" aria-hidden="true">✓</div>
+          <p class="section-kicker">đơn mô phỏng đã được tạo</p>
+          <h2 id="confirmation-title">Hẹn bạn ở quầy pha chế.</h2>
+          <p id="confirmation-copy">Chúng mình đang chuẩn bị món của bạn.</p>
+          <div class="confirmation-card"><span>Mã đơn</span><strong id="order-code">EH-00000000-0000</strong><small id="order-details"></small></div>
+          <button class="primary-button" type="button" data-action="start-new-order">Tạo đơn mới</button>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" id="main-nav" aria-label="Điều hướng chính">
+        <button type="button" class="is-active" data-action="show-home">Trang chủ</button>
+        <button type="button" data-action="show-menu">Menu</button>
+        <button type="button" data-action="scroll-story">Every Half</button>
+      </nav>
+
+      <aside class="cart-panel" id="cart-panel" aria-label="Giỏ món" aria-hidden="true">
+        <div class="cart-header"><div><p class="section-kicker">đơn đang chọn</p><h2>Giỏ món</h2></div><button class="icon-button" type="button" data-action="toggle-cart" aria-label="Đóng giỏ món">×</button></div>
+        <div id="cart-items" class="cart-items"></div>
+        <div class="checkout-zone">
+          <div class="total-row"><span>Tạm tính</span><strong id="cart-total">0đ</strong></div>
+          <fieldset class="choice-group"><legend>Nhận món</legend><label><input type="radio" name="fulfillment" value="pickup" checked /> Nhận tại quầy</label><label><input type="radio" name="fulfillment" value="delivery" /> Giao đến bạn</label></fieldset>
+          <fieldset class="choice-group" id="payment-options"><legend>Thanh toán</legend></fieldset>
+          <button class="primary-button checkout-button" id="checkout-button" data-action="checkout" type="button" disabled>Xác nhận đơn mô phỏng</button>
+        </div>
+      </aside>
+      <div class="scrim" id="scrim" data-action="toggle-cart" hidden></div>
+
+      <dialog class="product-dialog" id="product-dialog" aria-labelledby="dialog-title">
+        <form method="dialog"><button class="icon-button close-dialog" value="cancel" aria-label="Đóng tùy chọn">×</button></form>
+        <p class="section-kicker">tùy chọn món</p><h2 id="dialog-title">Thêm vào đơn</h2><p id="dialog-description"></p>
+        <label class="option-label">Ghi chú cho quán<textarea id="product-note" rows="2" placeholder="Ví dụ: ít đá"></textarea></label>
+        <button class="primary-button" id="dialog-add-button" type="button">Thêm vào giỏ</button>
+      </dialog>
+      <div class="toast" id="toast" aria-live="polite" role="status"></div>
+    </div>
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Every Half Coffee - Phần Thưởng &amp; Điểm Thưởng</title>
+<!-- Tailwind CSS CDN with forms and container queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            espresso: {
+              950: '#110a08',
+              900: '#1b120c',
+              800: '#2b1b13',
+              700: '#3e271c',
+              600: '#5c3826',
+            },
+            gold: {
+              light: '#f5d799',
+              DEFAULT: '#d4af37',
+              dark: '#9a7522',
+            },
+            bronze: {
+              300: '#e4b680',
+              500: '#be8046',
+              700: '#804f20',
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<!-- Lucide Icons CDN -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="custom-scroll-and-effects">
+    /* Ẩn scrollbar ngang cho danh sách cuộn mượt */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Hiệu ứng hạt bụi vàng lấp lánh (Shimmer glow) */
+    .golden-mesh {
+      background-image: 
+        radial-gradient(circle at 18% 25%, rgba(212, 175, 55, 0.16) 0%, transparent 40%),
+        radial-gradient(circle at 82% 15%, rgba(245, 215, 153, 0.12) 0%, transparent 35%),
+        radial-gradient(circle at 50% 80%, rgba(190, 128, 70, 0.1) 0%, transparent 50%);
+    }
+
+    /* Hiệu ứng mạ kim loại cho Stamp đã tích */
+    .stamp-filled {
+      background: linear-gradient(135deg, #dfa857 0%, #aa7728 50%, #e8bc6f 100%);
+      box-shadow: 0 3px 6px -1px rgba(170, 119, 40, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    }
+
+    /* Dập viền mờ cho Stamp còn trống */
+    .stamp-empty {
+      background: #f7f5f0;
+      border: 1.5px dashed #d1c8be;
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="bg-[#f8f6f3] text-gray-800 antialiased font-sans select-none pb-28">
+<!-- BEGIN: Mobile Container -->
+<div class="max-w-md mx-auto min-h-screen relative flex flex-col justify-between overflow-x-hidden bg-[#faf8f5]">
+<!-- BEGIN: TopBar iOS Status Bar -->
+<div class="w-full pt-3 px-7 pb-1 flex justify-between items-center text-white bg-espresso-950 z-30 select-none">
+<span class="text-sm font-semibold tracking-tight">17:59</span>
+<div class="flex items-center space-x-2 text-xs">
+<i class="w-3.5 h-3.5 fill-current" data-lucide="signal"></i>
+<i class="w-3.5 h-3.5" data-lucide="wifi"></i>
+<div class="flex items-center space-x-1 pl-1">
+<span class="text-[11px] font-bold">91</span>
+<div class="w-5 h-2.5 border border-white/80 rounded-sm p-[1px] flex items-center">
+<div class="h-full bg-white rounded-2xs w-[90%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- END: TopBar iOS Status Bar -->
+<!-- BEGIN: Hero Header Section -->
+<header class="relative bg-gradient-to-b from-espresso-950 via-espresso-900 to-espresso-800 text-white pt-3 pb-8 px-5 rounded-b-[2rem] shadow-xl golden-mesh" data-purpose="loyalty-hero-header">
+<!-- Action Navigation Row -->
+<div class="flex items-center justify-between pb-3">
+<!-- Brand / Screen Title with Sparkle -->
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center border border-amber-400/30">
+<i class="w-4 h-4 text-amber-300" data-lucide="sparkles"></i>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-white/95">Phần thưởng</h1>
+</div>
+<!-- History & Close Actions -->
+<div class="flex items-center space-x-3">
+<a class="text-xs font-medium text-amber-200/90 hover:text-amber-100 flex items-center bg-white/10 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-sm transition-all active:scale-95" href="#">
+            Lịch sử
+            <i class="w-3.5 h-3.5 ml-0.5 opacity-80" data-lucide="chevron-right"></i>
+</a>
+<button aria-label="Đóng" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center border border-white/10 text-white/80 hover:text-white backdrop-blur-sm active:scale-95">
+<i class="w-4 h-4" data-lucide="x"></i>
+</button>
+</div>
+</div>
+<!-- Main Balance & Membership Level -->
+<div class="mt-4 flex items-end justify-between">
+<!-- Balance Counter -->
+<div>
+<span class="text-[11px] uppercase tracking-wider text-amber-300/80 font-medium">Điểm đổi quà</span>
+<div class="flex items-baseline space-x-1.5">
+<span class="text-5xl font-black tracking-tight text-white drop-shadow-sm">415</span>
+<span class="text-xs font-semibold text-amber-400">điểm</span>
+</div>
+</div>
+<!-- Membership Tier Badge -->
+<div class="bg-gradient-to-r from-amber-950/60 to-espresso-950/80 border border-amber-500/40 rounded-2xl p-2.5 pl-3 pr-3.5 flex items-center space-x-2.5 backdrop-blur-md shadow-inner">
+<div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-espresso-950 shadow">
+<i class="w-4 h-4 fill-current" data-lucide="crown"></i>
+</div>
+<div class="text-left">
+<div class="flex items-center text-xs font-bold text-amber-200">
+              New Member
+              <i class="w-3 h-3 ml-0.5 text-amber-300/70" data-lucide="chevron-right"></i>
+</div>
+<p class="text-[10px] text-zinc-300">Xem đặc quyền</p>
+</div>
+</div>
+</div>
+<!-- Tier Progress Section -->
+<div class="mt-6 pt-3 border-t border-white/10" data-purpose="tier-progress-card">
+<div class="flex justify-between items-center text-xs mb-2">
+<span class="text-amber-100/90 font-medium flex items-center">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block mr-1.5"></span>
+            Hạng New
+          </span>
+<span class="text-[11px] text-amber-200/90 font-medium flex items-center">
+<i class="w-3 h-3 mr-1 text-amber-300" data-lucide="trophy"></i>
+            Cần <strong class="mx-1 text-amber-300 font-bold">585 điểm</strong> → Hạng Friend
+          </span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full bg-black/40 h-2.5 rounded-full p-0.5 border border-white/10 overflow-hidden relative">
+<!-- Filled progress (415 / 1000 ~ 41.5%) -->
+<div class="bg-gradient-to-r from-amber-500 via-amber-300 to-yellow-200 h-full rounded-full transition-all duration-500 shadow-sm" style="width: 41.5%"></div>
+<!-- Milestone dot indicator -->
+<div class="absolute top-1/2 left-[41.5%] -translate-y-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-white shadow-md"></div>
+</div>
+</div>
+</header>
+<!-- END: Hero Header Section -->
+<!-- BEGIN: Main Body Content -->
+<main class="px-4 -mt-4 space-y-4 flex-1 z-20">
+<!-- BEGIN: Stamp Loyalty Card -->
+<section class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200/70" data-purpose="coffee-stamp-card">
+<div class="flex items-center justify-between mb-3.5">
+<div class="flex items-center space-x-2">
+<div class="w-7 h-7 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
+<i class="w-4 h-4" data-lucide="stamp"></i>
+</div>
+<h2 class="font-bold text-gray-900 text-sm tracking-tight">Stamp của bạn</h2>
+</div>
+<a class="text-xs font-medium text-gray-500 hover:text-gray-800 flex items-center transition-colors" href="#">
+            Lịch sử
+            <i class="w-3.5 h-3.5 ml-0.5" data-lucide="chevron-right"></i>
+</a>
+</div>
+<!-- Stamp Grid (10 stamps: 6 stamped, 4 pending with 10th being the reward gift) -->
+<div class="grid grid-cols-5 gap-2.5 sm:gap-3 py-1">
+<!-- Stamp 1 -->
+<div class="aspect-square rounded-full stamp-filled flex items-center justify-center text-white">
+<i class="w-4 h-4 drop-shadow" data-lucide="coffee"></i>
+</div>
+<!-- Stamp 2 -->
+<div class="aspect-square rounded-full stamp-filled flex items-center justify-center text-white">
+<i class="w-4 h-4 drop-shadow" data-lucide="coffee"></i>
+</div>
+<!-- Stamp 3 -->
+<div class="aspect-square rounded-full stamp-filled flex items-center justify-center text-white">
+<i class="w-4 h-4 drop-shadow" data-lucide="coffee"></i>
+</div>
+<!-- Stamp 4 -->
+<div class="aspect-square rounded-full stamp-filled flex items-center justify-center text-white">
+<i class="w-4 h-4 drop-shadow" data-lucide="coffee"></i>
+</div>
+<!-- Stamp 5 -->
+<div class="aspect-square rounded-full stamp-filled flex items-center justify-center text-white">
+<i class="w-4 h-4 drop-shadow" data-lucide="coffee"></i>
+</div>
+<!-- Stamp 6 -->
+<div class="aspect-square rounded-full stamp-filled flex items-center justify-center text-white">
+<i class="w-4 h-4 drop-shadow" data-lucide="coffee"></i>
+</div>
+<!-- Stamp 7 (Empty) -->
+<div class="aspect-square rounded-full stamp-empty flex items-center justify-center text-stone-300">
+<span class="text-xs font-semibold">7</span>
+</div>
+<!-- Stamp 8 (Empty) -->
+<div class="aspect-square rounded-full stamp-empty flex items-center justify-center text-stone-300">
+<span class="text-xs font-semibold">8</span>
+</div>
+<!-- Stamp 9 (Empty) -->
+<div class="aspect-square rounded-full stamp-empty flex items-center justify-center text-stone-300">
+<span class="text-xs font-semibold">9</span>
+</div>
+<!-- Stamp 10 (Special Reward Milestone) -->
+<div class="aspect-square rounded-full border-2 border-dashed border-amber-500 bg-amber-50/60 flex items-center justify-center text-amber-600 relative group animate-pulse">
+<i class="w-4 h-4" data-lucide="gift"></i>
+<span class="absolute -top-1 -right-1 flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+</span>
+</div>
+</div>
+<!-- Stamp Card Footer Note -->
+<div class="mt-3.5 pt-2.5 border-t border-stone-100 flex items-center justify-between text-xs">
+<p class="text-gray-600 font-medium">
+            Còn <span class="font-bold text-espresso-700">4 ly</span> nữa để nhận 1 ly miễn phí!
+          </p>
+<a class="text-espresso-700 font-semibold flex items-center hover:underline" href="#">
+            Xem thưởng
+            <i class="w-3.5 h-3.5 ml-0.5" data-lucide="chevron-right"></i>
+</a>
+</div>
+</section>
+<!-- END: Stamp Loyalty Card -->
+<!-- BEGIN: Quick Access Hub (2 Cards) -->
+<section class="grid grid-cols-2 gap-3" data-purpose="quick-access-shortcuts">
+<!-- Card 1: Ví Voucher -->
+<div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200/70 hover:shadow-md transition-all active:scale-[0.98] cursor-pointer flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-600">
+<i class="w-5 h-5" data-lucide="ticket"></i>
+</div>
+<span class="bg-red-50 text-red-600 text-[11px] font-bold px-2 py-0.5 rounded-full border border-red-100">
+              3 có sẵn
+            </span>
+</div>
+<div class="mt-3">
+<h3 class="font-bold text-gray-900 text-sm">Ví voucher</h3>
+<p class="text-xs text-gray-500 mt-0.5">Ưu đãi &amp; coupon của tôi</p>
+</div>
+</div>
+<!-- Card 2: Đổi Điểm -->
+<div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200/70 hover:shadow-md transition-all active:scale-[0.98] cursor-pointer flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-700">
+<i class="w-5 h-5" data-lucide="gift"></i>
+</div>
+<span class="text-amber-700 bg-amber-50 text-[11px] font-bold px-2 py-0.5 rounded-full border border-amber-200">
+              Hot
+            </span>
+</div>
+<div class="mt-3">
+<h3 class="font-bold text-gray-900 text-sm">Đổi điểm</h3>
+<p class="text-xs text-gray-500 mt-0.5">Đổi quà &amp; đồ uống</p>
+</div>
+</div>
+</section>
+<!-- END: Quick Access Hub -->
+<!-- BEGIN: Quick Redeem Section (Đổi nhanh) -->
+<section class="space-y-3 pt-2" data-purpose="quick-redeem-slider">
+<div class="flex items-center justify-between px-0.5">
+<div class="flex items-center space-x-1.5">
+<i class="w-4 h-4 text-amber-600 fill-amber-500" data-lucide="zap"></i>
+<h2 class="font-bold text-base text-gray-950 tracking-tight">Đổi nhanh</h2>
+</div>
+<a class="text-xs font-semibold text-espresso-700 hover:text-espresso-900 flex items-center" href="#">
+            Xem tất cả
+            <i class="w-3.5 h-3.5 ml-0.5" data-lucide="chevron-right"></i>
+</a>
+</div>
+<!-- Horizontal Scroll List -->
+<div class="flex space-x-3 overflow-x-auto no-scrollbar pb-2 pt-0.5 -mx-4 px-4">
+<!-- Item 1: Americano -->
+<article class="min-w-[170px] max-w-[170px] bg-white rounded-2xl p-3 border border-stone-200/80 shadow-sm flex flex-col justify-between flex-shrink-0">
+<div>
+<!-- Cup Visual Area -->
+<div class="relative w-full h-28 rounded-xl bg-gradient-to-tr from-amber-100/60 to-stone-100 flex items-center justify-center overflow-hidden mb-2.5">
+<!-- Coffee cup illustration -->
+<div class="w-12 h-16 rounded-b-xl border-2 border-espresso-800/40 bg-espresso-700/80 relative flex items-center justify-center shadow-inner">
+<div class="w-10 h-2 bg-espresso-950 rounded-full absolute -top-1"></div>
+<i class="w-5 h-5 text-amber-200/90" data-lucide="coffee"></i>
+</div>
+<!-- Lock Tag Overlay -->
+<div class="absolute bottom-2 inset-x-2 bg-black/60 backdrop-blur-md rounded-lg py-1 px-1.5 flex items-center justify-center space-x-1 text-white">
+<i class="w-3 h-3 text-amber-300" data-lucide="lock"></i>
+<span class="text-[11px] font-bold">1.800 đ</span>
+</div>
+</div>
+<h4 class="font-bold text-xs text-gray-900 line-clamp-2 leading-snug">1 ly Americano đá/nóng</h4>
+</div>
+<div class="mt-3">
+<div class="w-full bg-stone-100 rounded-full h-1.5 overflow-hidden">
+<div class="bg-amber-600 h-full rounded-full" style="width: 23%"></div>
+</div>
+<p class="text-[10px] text-gray-400 mt-1 font-medium">Thiếu 1.385 điểm</p>
+</div>
+</article>
+<!-- Item 2: Espresso Sparkling Sơn La -->
+<article class="min-w-[170px] max-w-[170px] bg-white rounded-2xl p-3 border border-stone-200/80 shadow-sm flex flex-col justify-between flex-shrink-0">
+<div>
+<!-- Beverage Visual Area -->
+<div class="relative w-full h-28 rounded-xl bg-gradient-to-tr from-orange-100/60 to-amber-50 flex items-center justify-center overflow-hidden mb-2.5">
+<div class="w-12 h-16 rounded-b-xl border-2 border-amber-800/40 bg-gradient-to-b from-amber-400 to-amber-800 relative flex items-center justify-center shadow-inner">
+<div class="w-10 h-2 bg-amber-900 rounded-full absolute -top-1"></div>
+<i class="w-5 h-5 text-yellow-100" data-lucide="sparkle"></i>
+</div>
+<!-- Lock Tag Overlay -->
+<div class="absolute bottom-2 inset-x-2 bg-black/60 backdrop-blur-md rounded-lg py-1 px-1.5 flex items-center justify-center space-x-1 text-white">
+<i class="w-3 h-3 text-amber-300" data-lucide="lock"></i>
+<span class="text-[11px] font-bold">2.700 đ</span>
+</div>
+</div>
+<h4 class="font-bold text-xs text-gray-900 line-clamp-2 leading-snug">1 ly Espresso Sparkling Arabica Sơn La</h4>
+</div>
+<div class="mt-3">
+<div class="w-full bg-stone-100 rounded-full h-1.5 overflow-hidden">
+<div class="bg-amber-600 h-full rounded-full" style="width: 15%"></div>
+</div>
+<p class="text-[10px] text-gray-400 mt-1 font-medium">Thiếu 2.285 điểm</p>
+</div>
+</article>
+<!-- Item 3: Americano Fine Robusta Cư M'gar -->
+<article class="min-w-[170px] max-w-[170px] bg-white rounded-2xl p-3 border border-stone-200/80 shadow-sm flex flex-col justify-between flex-shrink-0">
+<div>
+<!-- Visual Area -->
+<div class="relative w-full h-28 rounded-xl bg-gradient-to-tr from-stone-200 to-amber-100 flex items-center justify-center overflow-hidden mb-2.5">
+<div class="w-12 h-16 rounded-b-xl border-2 border-amber-900/50 bg-espresso-800 relative flex items-center justify-center shadow-inner">
+<div class="w-10 h-2 bg-amber-950 rounded-full absolute -top-1"></div>
+<i class="w-5 h-5 text-amber-300" data-lucide="coffee"></i>
+</div>
+<!-- Lock Tag Overlay -->
+<div class="absolute bottom-2 inset-x-2 bg-black/60 backdrop-blur-md rounded-lg py-1 px-1.5 flex items-center justify-center space-x-1 text-white">
+<i class="w-3 h-3 text-amber-300" data-lucide="lock"></i>
+<span class="text-[11px] font-bold">2.700 đ</span>
+</div>
+</div>
+<h4 class="font-bold text-xs text-gray-900 line-clamp-2 leading-snug">1 ly Americano Fine Robusta Cư M'gar</h4>
+</div>
+<div class="mt-3">
+<div class="w-full bg-stone-100 rounded-full h-1.5 overflow-hidden">
+<div class="bg-amber-600 h-full rounded-full" style="width: 15%"></div>
+</div>
+<p class="text-[10px] text-gray-400 mt-1 font-medium">Thiếu 2.285 điểm</p>
+</div>
+</article>
+</div>
+</section>
+<!-- END: Quick Redeem Section -->
+<!-- BEGIN: Member Banner Promotion -->
+<section class="mt-2 bg-gradient-to-r from-espresso-800 to-espresso-950 rounded-2xl p-4 text-white flex items-center justify-between shadow-sm relative overflow-hidden">
+<div class="relative z-10">
+<span class="inline-block px-2 py-0.5 rounded-full text-[10px] bg-amber-500/20 text-amber-300 border border-amber-400/30 mb-1 font-semibold">Ưu đãi thành viên</span>
+<h3 class="text-sm font-bold text-white">Giảm 10% ly thứ 2 mỗi Thứ Ba</h3>
+<p class="text-[11px] text-zinc-300 mt-0.5">Áp dụng trực tiếp tại tất cả cửa hàng</p>
+</div>
+<div class="relative z-10 ml-2">
+<button class="bg-amber-500 hover:bg-amber-400 text-espresso-950 text-xs font-bold px-3 py-2 rounded-xl transition shadow active:scale-95 whitespace-nowrap">
+            Khám phá
+          </button>
+</div>
+<div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full bg-amber-500/10 blur-xl pointer-events-none"></div>
+</section>
+<!-- END: Member Banner Promotion -->
+</main>
+<!-- END: Main Body Content -->
+<!-- BEGIN: Bottom Tab Navigation (iOS TabBar) -->
+<nav class="fixed bottom-0 inset-x-0 max-w-md mx-auto bg-white/95 backdrop-blur-md border-t border-stone-200/80 px-6 py-2 pb-6 z-40" data-purpose="mobile-bottom-navigation">
+<div class="flex justify-around items-center">
+<!-- Tab 1: Home -->
+<a class="flex flex-col items-center space-y-1 text-gray-400 hover:text-gray-600 py-1 transition-colors" href="#">
+<i class="w-5 h-5" data-lucide="home"></i>
+<span class="text-[11px] font-medium">Home</span>
+</a>
+<!-- Tab 2: Menu / Order -->
+<a class="flex flex-col items-center space-y-1 text-gray-400 hover:text-gray-600 py-1 transition-colors" href="#">
+<i class="w-5 h-5" data-lucide="coffee"></i>
+<span class="text-[11px] font-medium">Menu</span>
+</a>
+<!-- Tab 3: Rewards (Active) -->
+<a class="flex flex-col items-center space-y-1 text-amber-700 py-1 font-semibold transition-colors relative" href="#">
+<div class="relative">
+<i class="w-5 h-5 text-amber-700" data-lucide="gift"></i>
+<span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-500"></span>
+</div>
+<span class="text-[11px] text-amber-800 font-bold">Rewards</span>
+</a>
+</div>
+</nav>
+<!-- END: Bottom Tab Navigation -->
+</div>
+<!-- END: Mobile Container -->
+<!-- BEGIN: Script Initialization -->
+<script data-purpose="lucide-icons-init">
+    // Render icon vector bằng thư viện Lucide
+    document.addEventListener("DOMContentLoaded", function() {
+      lucide.createIcons();
+    });
+  </script>
+<!-- END: Script Initialization -->
+</body></html>

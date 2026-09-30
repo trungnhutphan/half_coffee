@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>Every Half Coffee - Tích điểm &amp; Mã thanh toán</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Plus Jakarta Sans & Cormorant Garamond for luxury aesthetic -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cream: '#F9F8F6',
+              surface: '#F4F2EE',
+              card: '#FFFFFF',
+              dark: '#121110',
+              espresso: '#1E1B18',
+              accent: '#C5A880',
+              accentLight: '#F5EFE6',
+              muted: '#7A7672',
+              border: '#E8E5DF'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Space Grotesk"', 'monospace']
+          },
+          boxShadow: {
+            'luxury': '0 20px 40px -15px rgba(26, 23, 20, 0.08), 0 0 1px 1px rgba(0, 0, 0, 0.04)',
+            'btn-subtle': '0 4px 14px rgba(0, 0, 0, 0.06)'
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-enhancements">
+    /* iOS Safe Area Support */
+    body {
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Elegant Subtle Scanline Animation */
+    @keyframes scan {
+      0% { top: 0%; opacity: 0; }
+      15% { opacity: 0.8; }
+      85% { opacity: 0.8; }
+      100% { top: 100%; opacity: 0; }
+    }
+    .scanner-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, #C5A880 50%, transparent 100%);
+      box-shadow: 0 0 10px #C5A880;
+      animation: scan 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    /* Barcode pseudo-stripes simulation */
+    .barcode-pattern {
+      background: repeating-linear-gradient(
+        90deg,
+        #121110 0px,
+        #121110 3px,
+        transparent 3px,
+        transparent 6px,
+        #121110 6px,
+        #121110 8px,
+        transparent 8px,
+        transparent 13px,
+        #121110 13px,
+        #121110 17px,
+        transparent 17px,
+        transparent 19px,
+        #121110 19px,
+        #121110 24px,
+        transparent 24px,
+        transparent 26px
+      );
+    }
+  </style>
+</head>
+<body class="bg-brand-cream text-brand-dark min-h-screen flex flex-col justify-between font-sans selection:bg-brand-accent selection:text-white antialiased">
+<!-- BEGIN: MobileDeviceContainer -->
+<div class="w-full max-w-md mx-auto min-h-screen flex flex-col justify-between px-5 pt-3 pb-8 relative">
+<!-- BEGIN: TopBar -->
+<header class="w-full flex items-center justify-between py-3 select-none" data-purpose="screen-header">
+<!-- Back Navigation Button -->
+<button aria-label="Quay lại" class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-brand-border/70 text-brand-dark shadow-sm active:scale-95 transition-transform" type="button">
+<i class="w-5 h-5 stroke-[2.2]" data-lucide="chevron-left"></i>
+</button>
+<!-- Screen Title -->
+<div class="text-center">
+<h1 class="text-base font-semibold tracking-tight text-brand-dark">Tích điểm</h1>
+<p class="text-[10px] uppercase tracking-widest text-brand-muted font-medium">Every Half Loyalty</p>
+</div>
+<!-- Points Badge -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 bg-brand-accentLight/70 border border-brand-accent/30 rounded-full text-brand-espresso font-semibold text-xs shadow-sm" data-purpose="points-badge">
+<i class="w-3.5 h-3.5 text-brand-accent fill-brand-accent" data-lucide="sparkles"></i>
+<span>415</span>
+<span class="text-[10px] text-brand-muted font-normal">điểm</span>
+</div>
+</header>
+<!-- END: TopBar -->
+<!-- BEGIN: LoyaltyCardModal -->
+<main class="my-auto py-2 flex flex-col items-center w-full" data-purpose="qr-modal-content">
+<div class="w-full bg-brand-card rounded-[32px] p-6 sm:p-7 shadow-luxury border border-brand-border/60 relative overflow-hidden flex flex-col items-center">
+<!-- Subtle Top Brand Accent Decor -->
+<div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-brand-accent/40 via-brand-espresso to-brand-accent/40"></div>
+<!-- Instruction Text -->
+<div class="text-center mb-6 max-w-[240px]">
+<p class="text-xs sm:text-sm font-normal text-brand-muted leading-relaxed">
+            Vui lòng đưa mã này cho nhân viên khi thanh toán để tích điểm
+          </p>
+</div>
+<!-- QR Code Wrapper with Scanner Line -->
+<div class="relative p-3.5 bg-white rounded-2xl border border-brand-border/80 shadow-inner group">
+<div class="relative overflow-hidden w-48 h-48 sm:w-52 sm:h-52 flex items-center justify-center bg-white rounded-xl">
+<!-- Simulated QR Matrix Vector (Ultra Sharp & Scannable) -->
+<svg class="w-full h-full text-brand-espresso" fill="currentColor" viewbox="0 0 100 100">
+<!-- Corner Finder Patterns (Top-Left) -->
+<rect fill="none" height="28" rx="2" stroke="currentColor" stroke-width="4" width="28" x="5" y="5"></rect>
+<rect height="16" rx="1" width="16" x="11" y="11"></rect>
+<!-- Corner Finder Patterns (Top-Right) -->
+<rect fill="none" height="28" rx="2" stroke="currentColor" stroke-width="4" width="28" x="67" y="5"></rect>
+<rect height="16" rx="1" width="16" x="73" y="11"></rect>
+<!-- Corner Finder Patterns (Bottom-Left) -->
+<rect fill="none" height="28" rx="2" stroke="currentColor" stroke-width="4" width="28" x="5" y="67"></rect>
+<rect height="16" rx="1" width="16" x="11" y="73"></rect>
+<!-- Central Custom Alignment & Random Matrix Data Modules -->
+<rect height="16" rx="1" width="16" x="42" y="42"></rect>
+<rect fill="#FFFFFF" height="6" width="6" x="47" y="47"></rect>
+<!-- Micro Data Modules -->
+<rect height="5" width="5" x="37" y="8"></rect>
+<rect height="12" width="5" x="46" y="8"></rect>
+<rect height="5" width="6" x="55" y="15"></rect>
+<rect height="5" width="5" x="8" y="37"></rect>
+<rect height="6" width="7" x="17" y="40"></rect>
+<rect height="12" width="6" x="8" y="49"></rect>
+<rect height="5" width="8" x="27" y="48"></rect>
+<rect height="7" width="6" x="67" y="38"></rect>
+<rect height="5" width="16" x="77" y="38"></rect>
+<rect height="12" width="7" x="86" y="48"></rect>
+<rect height="7" width="10" x="71" y="53"></rect>
+<rect height="12" width="6" x="38" y="68"></rect>
+<rect height="6" width="8" x="48" y="74"></rect>
+<rect height="6" width="18" x="38" y="86"></rect>
+<rect height="14" width="6" x="68" y="70"></rect>
+<rect height="6" width="12" x="80" y="68"></rect>
+<rect height="12" width="14" x="78" y="80"></rect>
+<rect height="4" width="16" x="42" y="26"></rect>
+<rect height="4" width="6" x="42" y="34"></rect>
+<rect height="4" width="6" x="52" y="34"></rect>
+</svg>
+<!-- Subtle Animated Laser Scan Line -->
+<div class="scanner-line"></div>
+</div>
+</div>
+<!-- Auto-Refresh & Security Timer -->
+<div class="mt-4 flex items-center justify-center gap-2" data-purpose="auto-refresh-indicator">
+<div class="w-3.5 h-3.5 relative flex items-center justify-center">
+<svg class="w-full h-full -rotate-90 transform" viewbox="0 0 36 36">
+<path class="text-neutral-200" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-brand-accent transition-all duration-1000 ease-linear" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" id="timer-progress" stroke="currentColor" stroke-dasharray="100, 100" stroke-dashoffset="25" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+</div>
+<p class="text-[11px] text-brand-muted tracking-tight">
+            Tự động làm mới sau <span class="font-medium text-brand-dark" id="countdown">23s</span>
+</p>
+<button class="text-brand-muted hover:text-brand-dark transition-colors p-1" id="manual-refresh" title="Làm mới ngay" type="button">
+<i class="w-3 h-3" data-lucide="rotate-cw"></i>
+</button>
+</div>
+<!-- Divider with subtle notch aesthetic -->
+<div class="w-full flex items-center gap-3 my-4">
+<div class="h-px bg-brand-border flex-1"></div>
+<span class="text-[10px] uppercase tracking-widest text-brand-muted/70 font-medium">hoặc quét mã vạch</span>
+<div class="h-px bg-brand-border flex-1"></div>
+</div>
+<!-- Barcode Section -->
+<div class="w-full flex flex-col items-center" data-purpose="barcode-container">
+<div class="w-full max-w-[270px] h-14 barcode-pattern rounded-sm"></div>
+<!-- Member Code in Monospace -->
+<p class="font-mono text-xs tracking-[0.25em] text-brand-dark font-semibold mt-2.5">
+            EH-8924-0371-99
+          </p>
+</div>
+</div>
+</main>
+<!-- END: LoyaltyCardModal -->
+<!-- BEGIN: ActionButtonsFooter -->
+<footer class="w-full flex items-center gap-3 pt-4 select-none" data-purpose="action-buttons-group">
+<!-- Secondary Outline Button: Đổi điểm -->
+<button class="flex-1 py-3.5 px-4 rounded-2xl bg-white border border-brand-border text-brand-dark text-sm font-semibold tracking-tight shadow-btn-subtle active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="button">
+<i class="w-4 h-4 text-brand-muted stroke-[2]" data-lucide="gift"></i>
+<span>Đổi điểm</span>
+</button>
+<!-- Primary Espresso Button: Sử dụng voucher -->
+<button class="flex-1 py-3.5 px-4 rounded-2xl bg-brand-espresso text-brand-cream text-sm font-semibold tracking-tight shadow-md hover:bg-brand-dark active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="button">
+<i class="w-4 h-4 text-brand-accent stroke-[2]" data-lucide="ticket-percent"></i>
+<span>Sử dụng voucher</span>
+</button>
+</footer>
+<!-- END: ActionButtonsFooter -->
+<!-- Home Indicator bar for iOS frame realism -->
+<div class="w-32 h-1 bg-neutral-300 rounded-full mx-auto mt-5"></div>
+</div>
+<!-- END: MobileDeviceContainer -->
+<!-- BEGIN: InteractiveScripts -->
+<script data-purpose="lucide-init">
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+<script data-purpose="countdown-timer">
+    // Visual auto-refresh simulation
+    let secondsLeft = 30;
+    const countdownEl = document.getElementById('countdown');
+    const timerProgressEl = document.getElementById('timer-progress');
+    const refreshBtn = document.getElementById('manual-refresh');
+
+    function resetTimer() {
+      secondsLeft = 30;
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      countdownEl.textContent = `${secondsLeft}s`;
+      const offset = 100 - (secondsLeft / 30) * 100;
+      timerProgressEl.style.strokeDashoffset = offset;
+    }
+
+    const timerInterval = setInterval(() => {
+      secondsLeft--;
+      if (secondsLeft < 0) {
+        secondsLeft = 30;
+      }
+      updateDisplay();
+    }, 1000);
+
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', () => {
+        resetTimer();
+        refreshBtn.classList.add('animate-spin');
+        setTimeout(() => refreshBtn.classList.remove('animate-spin'), 600);
+      });
+    }
+  </script>
+<!-- END: InteractiveScripts -->
+</body></html>
