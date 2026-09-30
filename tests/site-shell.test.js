@@ -6,6 +6,8 @@ import { fileURLToPath } from 'node:url';
 
 import { JSDOM } from 'jsdom';
 
+import { bootstrap } from '../src/main.js';
+
 const rootUrl = new URL('../', import.meta.url);
 const indexUrl = new URL('index.html', rootUrl);
 
@@ -59,4 +61,35 @@ test('internal navigation resolves and the excluded personal image never ships',
 
   const publicFiles = readFileSync(indexUrl, 'utf8');
   assert.ok(!publicFiles.includes('TODO'));
+});
+
+test('visual system links styles and preserves accessible media contracts', async () => {
+  const { document } = await loadDocument();
+  const stylesheetHrefs = [...document.querySelectorAll('link[rel="stylesheet"]')].map((link) => link.getAttribute('href'));
+
+  assert.deepEqual(stylesheetHrefs, [
+    '/src/styles/tokens.css',
+    '/src/styles/site.css',
+    '/src/styles/demo.css',
+  ]);
+  document.querySelectorAll('img').forEach((image) => {
+    assert.ok(Number(image.getAttribute('width')) > 0, `${image.src} needs width`);
+    assert.ok(Number(image.getAttribute('height')) > 0, `${image.src} needs height`);
+  });
+
+  bootstrap(document);
+  document.querySelectorAll('#app-navigation [role="tab"]').forEach((tab) => {
+    assert.ok(tab.textContent.trim().length > 0, 'app tab needs an accessible name');
+  });
+});
+
+test('CSS includes focus, reduced-motion, phone and desktop behavior', async () => {
+  const cssFiles = ['tokens.css', 'site.css', 'demo.css'];
+  cssFiles.forEach((file) => assert.ok(existsSync(new URL(`src/styles/${file}`, rootUrl)), `${file} must exist`));
+  const css = (await Promise.all(cssFiles.map((file) => readFile(new URL(`src/styles/${file}`, rootUrl), 'utf8')))).join('\n');
+
+  assert.match(css, /:focus-visible/);
+  assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+  assert.match(css, /@media\s*\(max-width:\s*47\.99rem\)/);
+  assert.match(css, /@media\s*\(min-width:\s*64rem\)/);
 });
