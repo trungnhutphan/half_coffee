@@ -1,12 +1,16 @@
 {
-  "name": "every-half-static-demo",
+  "name": "ka-pods-marketing-demo",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "test": "node --test"
   },
   "devDependencies": {
-    "jsdom": "^26.1.0"
+    "jsdom": "^29.1.1",
+    "vite": "^8.3.1"
   }
 }
