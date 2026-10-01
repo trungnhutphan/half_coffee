@@ -5,7 +5,7 @@ export const REWARD_INCREMENT = 120;
 export const APP_SCREENS = freezeEntries([
   { id: 'home', label: 'Trang chủ', icon: 'home' },
   { id: 'rewards', label: 'Phần thưởng', icon: 'gift' },
-  { id: 'vouchers', label: 'Voucher', icon: 'ticket' },
+  { id: 'vouchers', label: 'Ưu đãi', icon: 'ticket' },
   { id: 'stores', label: 'Điểm bán', icon: 'pin' },
   { id: 'account', label: 'Tài khoản', icon: 'user' },
 ]);
@@ -16,23 +16,23 @@ export const VOUCHERS = freezeEntries([
     value: '50.000đ',
     title: 'Giảm cho đơn KA Pods',
     detail: 'Áp dụng cho đơn từ 299.000đ',
-    expires: '31.12.2026',
+    expires: '31/12/2026',
     tone: 'aqua',
   },
   {
     id: 'double-points',
     value: 'x2 điểm',
     title: 'Ngày giặt nhẹ tênh',
-    detail: 'Nhân đôi điểm cho lần quét tiếp theo',
-    expires: '30.11.2026',
+    detail: 'Nhân đôi điểm cho lần tích điểm tiếp theo',
+    expires: '30/11/2026',
     tone: 'green',
   },
   {
     id: 'refill-20',
     value: '20%',
-    title: 'Ưu đãi túi refill',
+    title: 'Ưu đãi túi nạp lại',
     detail: 'Dành cho thành viên KA Fresh',
-    expires: '15.01.2027',
+    expires: '15/01/2027',
     tone: 'navy',
   },
 ]);

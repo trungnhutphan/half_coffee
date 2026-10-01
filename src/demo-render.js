@@ -61,7 +61,7 @@ function renderHome(state) {
     ${rewardButton(state)}
     <div class="app-section-heading"><h4>Lối tắt của bạn</h4><span>Chạm để mở</span></div>
     <div class="quick-grid">
-      <button type="button" data-action="navigate-screen" data-screen="vouchers">${icon('ticket')}<span>Ví voucher</span><small>${state.savedVoucherIds.length} đã lưu</small></button>
+      <button type="button" data-action="navigate-screen" data-screen="vouchers">${icon('ticket')}<span>Ví ưu đãi</span><small>${state.savedVoucherIds.length} đã lưu</small></button>
       <button type="button" data-action="navigate-screen" data-screen="stores">${icon('pin')}<span>Điểm bán</span><small>3 cửa hàng mẫu</small></button>
     </div>
     <article class="wash-tip">
@@ -79,10 +79,10 @@ function renderRewards(state) {
       <strong id="points-balance">${formatPoints(state.points)}</strong>
       <span>điểm</span>
       <div class="reward-track"><i style="width:${Math.min(100, (state.points / 5000) * 100)}%"></i></div>
-      <small>${state.points >= 5000 ? 'Bạn đã mở khoá hạng KA Plus' : `${formatPoints(5000 - state.points)} điểm nữa để lên hạng KA Plus`}</small>
+      <small>${state.points >= 5000 ? 'Bạn đã mở khóa hạng KA Plus' : `${formatPoints(5000 - state.points)} điểm nữa để lên hạng KA Plus`}</small>
     </section>
     ${rewardButton(state)}
-    <div class="app-section-heading"><h4>Đổi quà nổi bật</h4><button type="button" data-action="navigate-screen" data-screen="vouchers">Xem voucher</button></div>
+    <div class="app-section-heading"><h4>Đổi quà nổi bật</h4><button type="button" data-action="navigate-screen" data-screen="vouchers">Xem ưu đãi</button></div>
     <div class="reward-list">
       <article><span class="reward-illustration reward-a">${icon('ticket')}</span><div><h4>Giảm 50.000đ</h4><p>Đơn KA Pods từ 299.000đ</p></div><b>2.000 điểm</b></article>
       <article><span class="reward-illustration reward-b">${icon('gift')}</span><div><h4>Túi đựng đồ giặt</h4><p>Quà dành cho hạng KA Plus</p></div><b>3.800 điểm</b></article>
@@ -109,8 +109,8 @@ function renderVouchers(state) {
   ];
 
   return `
-    ${appHeader('Ví voucher', `${state.savedVoucherIds.length} ưu đãi đã lưu`) }
-    <div class="voucher-filters" role="group" aria-label="Lọc voucher">
+    ${appHeader('Ví ưu đãi', `${state.savedVoucherIds.length} ưu đãi đã lưu`) }
+    <div class="voucher-filters" role="group" aria-label="Lọc ưu đãi">
       ${filters.map(([id, label]) => `<button type="button" data-action="set-voucher-filter" data-filter="${id}" class="${state.voucherFilter === id ? 'is-active' : ''}" aria-pressed="${state.voucherFilter === id}">${label}</button>`).join('')}
     </div>
     <div class="voucher-list">
@@ -119,12 +119,12 @@ function renderVouchers(state) {
         return `
           <article class="voucher-card voucher-${voucher.tone}">
             <div class="voucher-value"><strong>${escapeHtml(voucher.value)}</strong><span>KA Pods</span></div>
-            <div class="voucher-content"><h4>${escapeHtml(voucher.title)}</h4><p>${escapeHtml(voucher.detail)}</p><small>Đến ${escapeHtml(voucher.expires)}</small></div>
+            <div class="voucher-content"><h4>${escapeHtml(voucher.title)}</h4><p>${escapeHtml(voucher.detail)}</p><small>Hạn dùng: ${escapeHtml(voucher.expires)}</small></div>
             <button type="button" data-action="redeem-voucher" data-voucher-id="${voucher.id}" ${saved ? 'disabled' : ''}>${saved ? 'Đã lưu' : 'Lưu'}</button>
           </article>
         `;
       }).join('') : `
-        <div class="empty-state">${icon('ticket')}<h4>Chưa có voucher đã lưu</h4><p>Chọn “Có thể lưu” để tìm một ưu đãi phù hợp.</p></div>
+        <div class="empty-state">${icon('ticket')}<h4>Chưa có ưu đãi đã lưu</h4><p>Chọn “Có thể lưu” để tìm một ưu đãi phù hợp.</p></div>
       `}
     </div>
   `;
@@ -160,7 +160,7 @@ function renderAccount(state) {
     ${appHeader('Tài khoản', 'Thiết lập cho trải nghiệm KA của bạn.')}
     <section class="member-card">
       <span class="member-avatar">A</span>
-      <div><p>Thành viên KA Fresh</p><h4>An Nguyễn</h4><span>Mã demo · KA-04346</span></div>
+      <div><p>Thành viên KA Fresh</p><h4>An Nguyễn</h4><span>Mã mô phỏng · KA-04346</span></div>
       ${icon('spark')}
     </section>
     <div class="preference-group">
@@ -170,7 +170,7 @@ function renderAccount(state) {
         <button type="button" data-action="set-language" data-language="en" aria-pressed="${state.language === 'en'}"><span>EN</span><b>English</b>${state.language === 'en' ? icon('check') : ''}</button>
       </div>
     </div>
-    <div class="account-links" aria-label="Tuỳ chọn tài khoản demo">
+    <div class="account-links" aria-label="Tùy chọn tài khoản mô phỏng">
       <button type="button" data-action="show-demo-notice" data-label="Lịch sử nhận điểm"><span>${icon('gift')} Lịch sử nhận điểm</span>${icon('chevron')}</button>
       <button type="button" data-action="show-demo-notice" data-label="Thông tin thành viên"><span>${icon('user')} Thông tin thành viên</span>${icon('chevron')}</button>
     </div>

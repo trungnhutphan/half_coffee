@@ -81,12 +81,12 @@ test('voucher redemption and empty saved filter have clear states', async () => 
   const savedButton = firstDemo.document.querySelector('[data-voucher-id="fresh-50"]');
   assert.equal(savedButton?.textContent.trim(), 'Đã lưu');
   assert.equal(savedButton?.disabled, true);
-  assert.match(firstDemo.document.querySelector('#demo-status')?.textContent ?? '', /Đã lưu voucher/);
+  assert.match(firstDemo.document.querySelector('#demo-status')?.textContent ?? '', /Đã lưu ưu đãi/);
 
   const emptyDemo = await startDemo();
   click(emptyDemo.document, '[data-action="navigate-screen"][data-screen="vouchers"]');
   click(emptyDemo.document, '[data-action="set-voucher-filter"][data-filter="saved"]');
-  assert.match(emptyDemo.document.querySelector('.empty-state')?.textContent ?? '', /Chưa có voucher đã lưu/);
+  assert.match(emptyDemo.document.querySelector('.empty-state')?.textContent ?? '', /Chưa có ưu đãi đã lưu/);
 });
 
 test('store search accepts unaccented mixed-case input', async () => {
@@ -120,7 +120,7 @@ test('account demo options provide visible feedback instead of dead buttons', as
   click(document, '[data-action="show-demo-notice"]');
 
   assert.match(document.querySelector('#demo-status')?.textContent ?? '', /Lịch sử nhận điểm/);
-  assert.match(document.querySelector('#demo-status')?.textContent ?? '', /bản demo/);
+  assert.match(document.querySelector('#demo-status')?.textContent ?? '', /bản mô phỏng/);
 });
 
 test('reward costs are labelled as points instead of currency', async () => {

@@ -39,11 +39,11 @@ export function bootstrap(document) {
     if (action === 'redeem-voucher') {
       const nextState = redeemVoucher(state, trigger.dataset.voucherId);
       const voucher = VOUCHERS.find(({ id }) => id === trigger.dataset.voucherId);
-      if (nextState !== state) update(nextState, `Đã lưu voucher ${voucher?.value ?? ''}.`);
+      if (nextState !== state) update(nextState, `Đã lưu ưu đãi ${voucher?.value ?? ''}.`);
     }
 
     if (action === 'set-voucher-filter') {
-      update(setVoucherFilter(state, trigger.dataset.filter), `Đã đổi bộ lọc voucher sang ${trigger.textContent.trim()}.`);
+      update(setVoucherFilter(state, trigger.dataset.filter), `Đã đổi bộ lọc ưu đãi sang ${trigger.textContent.trim()}.`);
     }
 
     if (action === 'set-language') {
@@ -52,7 +52,7 @@ export function bootstrap(document) {
     }
 
     if (action === 'show-demo-notice') {
-      announce(`${trigger.dataset.label} là nội dung minh hoạ trong bản demo.`);
+      announce(`${trigger.dataset.label} là nội dung minh họa trong bản mô phỏng.`);
     }
   });
 
@@ -116,7 +116,7 @@ export function bootstrap(document) {
       }
       const nextState = redeemVoucher(state, voucherId);
       if (nextState === state) return { status: 'already_saved', voucherId };
-      update({ ...nextState, activeScreen: 'vouchers' }, `Đã lưu voucher ${voucherId}.`);
+      update({ ...nextState, activeScreen: 'vouchers' }, `Đã lưu ưu đãi ${voucherId}.`);
       return { status: 'saved', voucherId };
     },
     searchStoreLocations(query) {
@@ -149,7 +149,7 @@ function registerWebMcpTools(document, actions) {
     },
     {
       name: 'save_voucher',
-      title: 'Lưu voucher',
+      title: 'Lưu ưu đãi',
       description: 'Save one available KA Pods voucher and show it in the visible voucher wallet.',
       inputSchema: {
         type: 'object',

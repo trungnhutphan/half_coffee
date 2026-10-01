@@ -93,3 +93,17 @@ test('CSS includes focus, reduced-motion, phone and desktop behavior', async () 
   assert.match(css, /@media\s*\(max-width:\s*47\.99rem\)/);
   assert.match(css, /@media\s*\(min-width:\s*64rem\)/);
 });
+
+test('Vietnamese copy is consistent and the antibacterial image is not circularly cropped', async () => {
+  const { document } = await loadDocument();
+  bootstrap(document);
+  const visibleCopy = document.body.textContent;
+  const siteCss = await readFile(new URL('src/styles/site.css', rootUrl), 'utf8');
+  const proofImageRule = siteCss.match(/\.proof-image img\s*\{[^}]+\}/)?.[0] ?? '';
+
+  assert.doesNotMatch(visibleCopy, /hoà|khoá|minh hoạ|Tuỳ|voucher|app demo/i);
+  assert.match(visibleCopy, /hòa tan/);
+  assert.match(visibleCopy, /Ví ưu đãi/);
+  assert.match(proofImageRule, /object-fit:\s*contain/);
+  assert.doesNotMatch(proofImageRule, /border-radius:\s*50%/);
+});
