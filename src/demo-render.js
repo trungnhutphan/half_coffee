@@ -10,7 +10,7 @@ function publicImageUrl(fileName) {
 const APP_IMAGES = {
   logo: publicImageUrl('ka-pods-logo.jpeg'),
   pods: publicImageUrl('ka-pods-pods.jpeg'),
-  profile: publicImageUrl('profile-an.jpg'),
+  profile: publicImageUrl('profile-gia-han.jpg'),
 };
 
 const ICONS = {
@@ -39,7 +39,7 @@ function appHeader(title, subtitle = '') {
       <div class="app-brand" aria-label="KA Pods">
         <img src="${APP_IMAGES.logo}" alt="Logo KA Pods" width="447" height="447" />
       </div>
-      <span class="app-avatar"><img src="${APP_IMAGES.profile}" alt="Ảnh đại diện của An Nguyễn" width="480" height="480" /></span>
+      <span class="app-avatar"><img src="${APP_IMAGES.profile}" alt="Ảnh đại diện của Huỳnh Gia Hân" width="480" height="480" /></span>
     </header>
     <div class="app-title-row">
       <div><h3>${escapeHtml(title)}</h3>${subtitle ? `<p>${escapeHtml(subtitle)}</p>` : ''}</div>
@@ -58,7 +58,7 @@ function rewardButton(state) {
 
 function renderHome(state) {
   return `
-    ${appHeader('Chào buổi sáng, An', 'Một ngày nhẹ tênh bắt đầu từ đồ sạch.')}
+    ${appHeader('Chào buổi sáng, Gia Hân', 'Một ngày nhẹ tênh bắt đầu từ đồ sạch.')}
     <section class="points-hero" aria-label="Điểm thành viên">
       <div>
         <p>Điểm KA Fresh</p>
@@ -168,8 +168,8 @@ function renderAccount(state) {
   return `
     ${appHeader('Tài khoản', 'Thiết lập cho trải nghiệm KA của bạn.')}
     <section class="member-card">
-      <span class="member-avatar"><img src="${APP_IMAGES.profile}" alt="Ảnh đại diện của An Nguyễn" width="480" height="480" /></span>
-      <div><p>Thành viên KA Fresh</p><h4>An Nguyễn</h4><span>Mã mô phỏng · KA-04346</span></div>
+      <span class="member-avatar"><img src="${APP_IMAGES.profile}" alt="Ảnh đại diện của Huỳnh Gia Hân" width="480" height="480" /></span>
+      <div><p>Thành viên KA Fresh</p><h4>Huỳnh Gia Hân</h4><span>Mã mô phỏng · KA-04346</span></div>
       ${icon('spark')}
     </section>
     <div class="preference-group">

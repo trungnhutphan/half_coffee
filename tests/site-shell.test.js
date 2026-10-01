@@ -59,7 +59,7 @@ test('internal navigation resolves and personal source filenames are not exposed
 
   assert.ok(!html.includes(excludedFile));
   assert.ok(!existsSync(new URL(`public/images/${excludedFile}`, rootUrl)));
-  assert.ok(existsSync(new URL('public/images/profile-an.jpg', rootUrl)));
+  assert.ok(existsSync(new URL('public/images/profile-gia-han.jpg', rootUrl)));
   assert.ok(existsSync(new URL('public/images/ka-pods-logo.jpeg', rootUrl)));
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     assert.ok(document.querySelector(link.getAttribute('href')), `${link.getAttribute('href')} must resolve`);
@@ -85,7 +85,7 @@ test('visual system links styles and preserves accessible media contracts', asyn
 
   bootstrap(document);
   assert.equal(document.querySelector('.app-brand img')?.getAttribute('src')?.includes('ka-pods-logo.jpeg'), true);
-  assert.equal(document.querySelector('.app-avatar img')?.getAttribute('src')?.includes('profile-an.jpg'), true);
+  assert.equal(document.querySelector('.app-avatar img')?.getAttribute('src')?.includes('profile-gia-han.jpg'), true);
   document.querySelectorAll('#app-navigation [role="tab"]').forEach((tab) => {
     assert.ok(tab.textContent.trim().length > 0, 'app tab needs an accessible name');
   });
