@@ -1,11 +1,17 @@
 import { APP_SCREENS, STORES, VOUCHERS } from './demo-data.js';
 import { searchStores } from './demo-state.js';
 
-const APP_IMAGE_URL = typeof import.meta.env?.BASE_URL === 'string'
-  ? `${import.meta.env.BASE_URL}images/ka-pods-pods.jpeg`
-  : typeof document !== 'undefined'
-    ? new URL('./public/images/ka-pods-pods.jpeg', document.baseURI).href
-    : new URL('../public/images/ka-pods-pods.jpeg', import.meta.url).href;
+function publicImageUrl(fileName) {
+  if (typeof import.meta.env?.BASE_URL === 'string') return `${import.meta.env.BASE_URL}images/${fileName}`;
+  if (typeof document !== 'undefined') return new URL(`./public/images/${fileName}`, document.baseURI).href;
+  return new URL(`../public/images/${fileName}`, import.meta.url).href;
+}
+
+const APP_IMAGES = {
+  logo: publicImageUrl('ka-pods-logo.jpeg'),
+  pods: publicImageUrl('ka-pods-pods.jpeg'),
+  profile: publicImageUrl('profile-an.jpg'),
+};
 
 const ICONS = {
   home: '<path d="M3 11.5 12 4l9 7.5v8a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H4.5A1.5 1.5 0 0 1 3 19.5z"/>',
@@ -31,10 +37,9 @@ function appHeader(title, subtitle = '') {
   return `
     <header class="app-header">
       <div class="app-brand" aria-label="KA Pods">
-        <span class="app-brand-glyph" aria-hidden="true"><i></i><i></i><i></i></span>
-        <strong>KA</strong><small>ポッド</small>
+        <img src="${APP_IMAGES.logo}" alt="Logo KA Pods" width="447" height="447" />
       </div>
-      <div class="app-avatar" aria-hidden="true">A</div>
+      <span class="app-avatar"><img src="${APP_IMAGES.profile}" alt="Ảnh đại diện của An Nguyễn" width="480" height="480" /></span>
     </header>
     <div class="app-title-row">
       <div><h3>${escapeHtml(title)}</h3>${subtitle ? `<p>${escapeHtml(subtitle)}</p>` : ''}</div>
@@ -70,7 +75,7 @@ function renderHome(state) {
     </div>
     <article class="wash-tip">
       <div><span>Mẹo nhỏ hôm nay</span><h4>Viên trước, quần áo sau.</h4><p>Đặt viên dưới đáy lồng giúp màng tan đều hơn.</p></div>
-      <img src="${APP_IMAGE_URL}" alt="Viên giặt KA Pods xanh trắng" width="522" height="513" />
+      <img src="${APP_IMAGES.pods}" alt="Viên giặt KA Pods xanh trắng" width="522" height="513" />
     </article>
   `;
 }
@@ -163,7 +168,7 @@ function renderAccount(state) {
   return `
     ${appHeader('Tài khoản', 'Thiết lập cho trải nghiệm KA của bạn.')}
     <section class="member-card">
-      <span class="member-avatar">A</span>
+      <span class="member-avatar"><img src="${APP_IMAGES.profile}" alt="Ảnh đại diện của An Nguyễn" width="480" height="480" /></span>
       <div><p>Thành viên KA Fresh</p><h4>An Nguyễn</h4><span>Mã mô phỏng · KA-04346</span></div>
       ${icon('spark')}
     </section>

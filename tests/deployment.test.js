@@ -29,5 +29,5 @@ test('source index also works when GitHub Pages publishes the main branch direct
   assert.match(html, /href="\.\/src\/styles\/tokens\.css"/);
   assert.match(html, /src="\.\/src\/main\.js"/);
   assert.match(html, /src="\.\/public\/images\/ka-pods-hero\.jpeg"/);
-  assert.match(html, /href="\.\/public\/favicon\.svg"/);
+  assert.match(html, /href="\.\/public\/images\/ka-pods-logo\.jpeg"/);
 });

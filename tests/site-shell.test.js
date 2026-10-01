@@ -25,6 +25,7 @@ test('page metadata and hero identify the KA Pods product', async () => {
   assert.equal(document.querySelectorAll('h1').length, 1);
   assert.equal(document.querySelector('h1')?.textContent.trim(), 'Giặt sạch. Kháng khuẩn. Gọn trong một viên.');
   assert.equal(document.querySelector('#hero-title span:nth-child(2)')?.textContent, 'Kháng khuẩn.');
+  assert.equal(document.querySelectorAll('.brand-logo-image[src="./public/images/ka-pods-logo.jpeg"]').length, 2);
 });
 
 test('marketing story exposes every required landmark and app mount', async () => {
@@ -52,12 +53,14 @@ test('product imagery has meaningful alternatives and deployable files', async (
   });
 });
 
-test('internal navigation resolves and the excluded personal image never ships', async () => {
+test('internal navigation resolves and personal source filenames are not exposed', async () => {
   const { html, document } = await loadDocument();
   const excludedFile = '771870654_1087674896935603_2609919475889399333_n.jpg';
 
   assert.ok(!html.includes(excludedFile));
   assert.ok(!existsSync(new URL(`public/images/${excludedFile}`, rootUrl)));
+  assert.ok(existsSync(new URL('public/images/profile-an.jpg', rootUrl)));
+  assert.ok(existsSync(new URL('public/images/ka-pods-logo.jpeg', rootUrl)));
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     assert.ok(document.querySelector(link.getAttribute('href')), `${link.getAttribute('href')} must resolve`);
   });
@@ -81,6 +84,8 @@ test('visual system links styles and preserves accessible media contracts', asyn
   });
 
   bootstrap(document);
+  assert.equal(document.querySelector('.app-brand img')?.getAttribute('src')?.includes('ka-pods-logo.jpeg'), true);
+  assert.equal(document.querySelector('.app-avatar img')?.getAttribute('src')?.includes('profile-an.jpg'), true);
   document.querySelectorAll('#app-navigation [role="tab"]').forEach((tab) => {
     assert.ok(tab.textContent.trim().length > 0, 'app tab needs an accessible name');
   });

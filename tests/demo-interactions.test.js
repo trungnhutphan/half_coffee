@@ -143,6 +143,7 @@ test('language preference updates visibly and announces the change', async () =>
 test('account demo options provide visible feedback instead of dead buttons', async () => {
   const { document } = await startDemo();
   click(document, '[data-action="navigate-screen"][data-screen="account"]');
+  assert.equal(document.querySelector('.member-avatar img')?.getAttribute('src')?.includes('profile-an.jpg'), true);
   click(document, '[data-action="show-demo-notice"]');
 
   assert.match(document.querySelector('#demo-status')?.textContent ?? '', /Lịch sử nhận điểm/);
