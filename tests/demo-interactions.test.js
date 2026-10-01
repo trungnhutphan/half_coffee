@@ -49,6 +49,32 @@ test('five accessible tabs switch the visible app panel', async () => {
   assert.deepEqual(runtimeErrors, []);
 });
 
+test('app gateway opens a focused phone experience and returns to marketing', async () => {
+  const { document } = await startDemo();
+  const window = document.defaultView;
+  const openButton = document.querySelector('[data-action="open-app"]');
+  const portal = document.querySelector('#app-demo');
+  const portalToolbar = document.querySelector('.app-portal-toolbar');
+  const closeButton = document.querySelector('[data-action="close-app"]');
+
+  openButton.click();
+
+  assert.equal(document.body.classList.contains('app-mode'), true);
+  assert.equal(portal.getAttribute('role'), 'dialog');
+  assert.equal(portal.getAttribute('aria-modal'), 'true');
+  assert.equal(portalToolbar.hidden, false);
+  assert.equal(document.activeElement, closeButton);
+  assert.ok(document.querySelector('.site-header').hasAttribute('inert'));
+
+  document.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+
+  assert.equal(document.body.classList.contains('app-mode'), false);
+  assert.equal(portal.hasAttribute('role'), false);
+  assert.equal(portalToolbar.hidden, true);
+  assert.equal(document.activeElement, openButton);
+  assert.equal(document.querySelector('.site-header').hasAttribute('inert'), false);
+});
+
 test('app tabs support arrow Home and End keyboard navigation', async () => {
   const { document } = await startDemo();
   const window = document.defaultView;

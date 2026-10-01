@@ -27,7 +27,7 @@
         <a href="#how-to">Cách dùng</a>
         <a href="#products">Sản phẩm</a>
       </nav>
-      <a class="header-cta" href="#app-demo">Trải nghiệm ứng dụng</a>
+      <button class="header-cta" type="button" data-action="open-app" aria-haspopup="dialog">Mở ứng dụng</button>
     </header>
 
     <main>
@@ -39,7 +39,7 @@
             Một viên KA Pods thay cho nhiều bước đong đếm — gọn tay, sạch áo quần và vừa vặn với nhịp sống mỗi ngày.
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#app-demo">Mở bản mô phỏng</a>
+            <button class="button button-primary" type="button" data-action="open-app" aria-haspopup="dialog">Dùng thử ứng dụng</button>
             <a class="text-link" href="#how-to">Xem cách sử dụng</a>
           </div>
           <dl class="hero-notes" aria-label="Thông tin nhanh">
@@ -183,6 +183,13 @@
         </div>
 
         <div class="phone-wrap">
+          <div class="app-portal-toolbar" hidden>
+            <button class="app-exit" type="button" data-action="close-app">
+              <span aria-hidden="true">←</span>
+              <span>Về trang giới thiệu</span>
+            </button>
+            <p><strong>KA Pods</strong><span>Bản mô phỏng ứng dụng</span></p>
+          </div>
           <div class="phone" aria-label="Ứng dụng KA Pods mô phỏng">
             <div class="phone-speaker" aria-hidden="true"></div>
             <section id="phone-screen" class="phone-screen" aria-live="off">

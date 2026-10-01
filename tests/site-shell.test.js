@@ -36,6 +36,8 @@ test('marketing story exposes every required landmark and app mount', async () =
   assert.ok(document.querySelector('#phone-screen'));
   assert.equal(document.querySelector('#app-navigation')?.getAttribute('role'), 'tablist');
   assert.equal(document.querySelector('#demo-status')?.getAttribute('aria-live'), 'polite');
+  assert.ok(document.querySelectorAll('[data-action="open-app"]').length >= 2);
+  assert.equal(document.querySelector('.app-portal-toolbar')?.hidden, true);
 });
 
 test('product imagery has meaningful alternatives and deployable files', async () => {

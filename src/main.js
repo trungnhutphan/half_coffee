@@ -6,6 +6,15 @@ export function bootstrap(document) {
   let state = createInitialState();
   const phone = document.querySelector('.phone');
   const status = document.querySelector('#demo-status');
+  const appPortal = document.querySelector('#app-demo');
+  const portalToolbar = document.querySelector('.app-portal-toolbar');
+  const closeAppButton = document.querySelector('[data-action="close-app"]');
+  const backgroundElements = [
+    document.querySelector('.site-header'),
+    document.querySelector('.site-footer'),
+    ...[...document.querySelector('main').children].filter((section) => section !== appPortal),
+  ].filter(Boolean);
+  let appReturnFocus = null;
 
   const announce = (message) => {
     status.textContent = '';
@@ -19,6 +28,29 @@ export function bootstrap(document) {
   };
 
   renderDemo(document, state);
+
+  const setAppMode = (open, trigger = null) => {
+    document.body.classList.toggle('app-mode', open);
+    portalToolbar.hidden = !open;
+    backgroundElements.forEach((element) => {
+      if (open) element.setAttribute('inert', '');
+      else element.removeAttribute('inert');
+    });
+
+    if (open) {
+      appReturnFocus = trigger;
+      appPortal.setAttribute('role', 'dialog');
+      appPortal.setAttribute('aria-modal', 'true');
+      closeAppButton.focus();
+      announce('Đã mở ứng dụng KA Pods.');
+      return;
+    }
+
+    appPortal.removeAttribute('role');
+    appPortal.removeAttribute('aria-modal');
+    appReturnFocus?.focus();
+    announce('Đã quay lại trang giới thiệu.');
+  };
 
   phone.addEventListener('click', (event) => {
     const trigger = event.target.closest('[data-action]');
@@ -86,6 +118,13 @@ export function bootstrap(document) {
   });
 
   document.addEventListener('click', (event) => {
+    const appModeTrigger = event.target.closest('[data-action="open-app"], [data-action="close-app"]');
+    if (appModeTrigger) {
+      const shouldOpen = appModeTrigger.dataset.action === 'open-app';
+      setAppMode(shouldOpen, shouldOpen ? appModeTrigger : null);
+      return;
+    }
+
     const link = event.target.closest('a[href^="#"]');
     if (!link) return;
     const target = document.querySelector(link.getAttribute('href'));
@@ -101,6 +140,12 @@ export function bootstrap(document) {
     if (typeof target.scrollIntoView === 'function') {
       target.scrollIntoView({ behavior, block: 'start' });
     }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !document.body.classList.contains('app-mode')) return;
+    event.preventDefault();
+    setAppMode(false);
   });
 
   registerWebMcpTools(document, {
@@ -131,7 +176,10 @@ export function bootstrap(document) {
     },
   });
 
-  return { getState: () => state };
+  return {
+    getState: () => state,
+    isAppMode: () => document.body.classList.contains('app-mode'),
+  };
 }
 
 function registerWebMcpTools(document, actions) {
