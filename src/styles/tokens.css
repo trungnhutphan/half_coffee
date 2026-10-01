@@ -1,3 +1,8 @@
+@import "@fontsource/be-vietnam-pro/400.css";
+@import "@fontsource/be-vietnam-pro/700.css";
+@import "@fontsource/be-vietnam-pro/800.css";
+@import "@fontsource/be-vietnam-pro/900.css";
+
 :root {
   color-scheme: light;
   --navy: #073b78;
@@ -14,8 +19,8 @@
   --mist: #f6fbfd;
   --slate: #5c7085;
   --line: rgba(7, 59, 120, 0.13);
-  --font-sans: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
-  --font-display: "Arial Rounded MT Bold", "Avenir Next", "Trebuchet MS", sans-serif;
+  --font-sans: "Be Vietnam Pro", "Segoe UI", Arial, sans-serif;
+  --font-display: "Be Vietnam Pro", "Segoe UI", Arial, sans-serif;
   --step--1: clamp(0.875rem, 0.84rem + 0.14vw, 0.95rem);
   --step-0: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
   --step-1: clamp(1.25rem, 1.08rem + 0.7vw, 1.75rem);
@@ -52,6 +57,7 @@ body {
   background: var(--white);
   font-family: var(--font-sans);
   font-size: var(--step-0);
+  font-synthesis: none;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }

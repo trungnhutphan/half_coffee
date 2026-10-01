@@ -24,6 +24,7 @@ test('page metadata and hero identify the KA Pods product', async () => {
   assert.match(document.querySelector('meta[name="description"]')?.content ?? '', /viên giặt KA Pods/i);
   assert.equal(document.querySelectorAll('h1').length, 1);
   assert.equal(document.querySelector('h1')?.textContent.trim(), 'Giặt sạch. Kháng khuẩn. Gọn trong một viên.');
+  assert.equal(document.querySelector('#hero-title span:nth-child(2)')?.textContent, 'Kháng khuẩn.');
 });
 
 test('marketing story exposes every required landmark and app mount', async () => {
@@ -106,4 +107,19 @@ test('Vietnamese copy is consistent and the antibacterial image is not circularl
   assert.match(visibleCopy, /Ví ưu đãi/);
   assert.match(proofImageRule, /object-fit:\s*contain/);
   assert.doesNotMatch(proofImageRule, /border-radius:\s*50%/);
+});
+
+test('typography self-hosts a Vietnamese font without synthetic weights', async () => {
+  const tokensCss = await readFile(new URL('src/styles/tokens.css', rootUrl), 'utf8');
+  const siteCss = await readFile(new URL('src/styles/site.css', rootUrl), 'utf8');
+  const demoCss = await readFile(new URL('src/styles/demo.css', rootUrl), 'utf8');
+  const allCss = `${tokensCss}\n${siteCss}\n${demoCss}`;
+
+  [400, 700, 800, 900].forEach((weight) => {
+    assert.match(tokensCss, new RegExp(`@fontsource/be-vietnam-pro/${weight}\\.css`));
+  });
+  assert.match(tokensCss, /--font-(?:sans|display):\s*"Be Vietnam Pro"/);
+  assert.match(tokensCss, /font-synthesis:\s*none/);
+  assert.doesNotMatch(allCss, /Avenir Next|Arial Rounded MT Bold/);
+  assert.doesNotMatch(allCss, /font-weight:\s*(?:750|850)/);
 });
