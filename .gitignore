@@ -2,3 +2,6 @@ node_modules/
 npm-debug.log*
 .worktrees/
 dist/
+.DS_Store
+source/
+stitch_profile_interface_frontend/
