@@ -40,7 +40,7 @@ test('five accessible tabs switch the visible app panel', async () => {
   const { document, runtimeErrors } = await startDemo();
   const tabs = [...document.querySelectorAll('#app-navigation [role="tab"]')];
 
-  assert.ok(document.querySelector('script[type="module"][src="/src/main.js"]'));
+  assert.ok(document.querySelector('script[type="module"][src="./src/main.js"]'));
   assert.equal(tabs.length, 5);
   assert.equal(tabs.filter((tab) => tab.getAttribute('aria-selected') === 'true').length, 1);
   click(document, '[data-action="navigate-screen"][data-screen="rewards"]');

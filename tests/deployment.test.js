@@ -21,3 +21,13 @@ test('GitHub Actions verifies, builds, and deploys the dist artifact', async () 
   assert.match(workflow, /path:\s*dist/);
   assert.match(workflow, /actions\/deploy-pages@/);
 });
+
+test('source index also works when GitHub Pages publishes the main branch directly', async () => {
+  const html = await readFile(new URL('index.html', rootUrl), 'utf8');
+
+  assert.doesNotMatch(html, /(?:src|href)="\/(?:src|images)\//);
+  assert.match(html, /href="\.\/src\/styles\/tokens\.css"/);
+  assert.match(html, /src="\.\/src\/main\.js"/);
+  assert.match(html, /src="\.\/public\/images\/ka-pods-hero\.jpeg"/);
+  assert.match(html, /href="\.\/public\/favicon\.svg"/);
+});

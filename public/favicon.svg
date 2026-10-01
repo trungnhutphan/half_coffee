@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="KA Pods">
+  <rect width="64" height="64" rx="16" fill="#eaf8fc"/>
+  <path d="M32 9c8 0 12 8 12 15 7-3 16 0 16 8 0 9-9 12-16 9 2 8-2 15-12 15-9 0-13-7-11-15-8 3-17 0-17-9 0-8 9-11 17-8 0-7 3-15 11-15Z" fill="#00a9a5"/>
+  <circle cx="42" cy="22" r="9" fill="#72c93d"/>
+  <circle cx="24" cy="41" r="8" fill="#ffffff" opacity=".9"/>
+</svg>

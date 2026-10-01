@@ -40,12 +40,12 @@ test('marketing story exposes every required landmark and app mount', async () =
 
 test('product imagery has meaningful alternatives and deployable files', async () => {
   const { document } = await loadDocument();
-  const productImages = [...document.querySelectorAll('img[src^="/images/"]')];
+  const productImages = [...document.querySelectorAll('img[src^="./public/images/"]')];
 
   assert.ok(productImages.length >= 5);
   productImages.forEach((image) => {
     assert.ok(image.alt.trim().length >= 12, `${image.src} needs a specific Vietnamese alt`);
-    const assetUrl = new URL(`public${image.getAttribute('src')}`, rootUrl);
+    const assetUrl = new URL(image.getAttribute('src'), rootUrl);
     assert.ok(existsSync(assetUrl), `${fileURLToPath(assetUrl)} must exist`);
   });
 });
@@ -69,9 +69,9 @@ test('visual system links styles and preserves accessible media contracts', asyn
   const stylesheetHrefs = [...document.querySelectorAll('link[rel="stylesheet"]')].map((link) => link.getAttribute('href'));
 
   assert.deepEqual(stylesheetHrefs, [
-    '/src/styles/tokens.css',
-    '/src/styles/site.css',
-    '/src/styles/demo.css',
+    './src/styles/tokens.css',
+    './src/styles/site.css',
+    './src/styles/demo.css',
   ]);
   document.querySelectorAll('img').forEach((image) => {
     assert.ok(Number(image.getAttribute('width')) > 0, `${image.src} needs width`);
@@ -116,7 +116,8 @@ test('typography self-hosts a Vietnamese font without synthetic weights', async 
   const allCss = `${tokensCss}\n${siteCss}\n${demoCss}`;
 
   [400, 700, 800, 900].forEach((weight) => {
-    assert.match(tokensCss, new RegExp(`@fontsource/be-vietnam-pro/${weight}\\.css`));
+    assert.match(tokensCss, new RegExp(`be-vietnam-pro-vietnamese-${weight}-normal\\.woff2`));
+    assert.match(tokensCss, new RegExp(`be-vietnam-pro-latin-${weight}-normal\\.woff2`));
   });
   assert.match(tokensCss, /--font-(?:sans|display):\s*"Be Vietnam Pro"/);
   assert.match(tokensCss, /font-synthesis:\s*none/);

@@ -1,7 +1,11 @@
 import { APP_SCREENS, STORES, VOUCHERS } from './demo-data.js';
 import { searchStores } from './demo-state.js';
 
-const APP_BASE_URL = typeof import.meta.env?.BASE_URL === 'string' ? import.meta.env.BASE_URL : '/';
+const APP_IMAGE_URL = typeof import.meta.env?.BASE_URL === 'string'
+  ? `${import.meta.env.BASE_URL}images/ka-pods-pods.jpeg`
+  : typeof document !== 'undefined'
+    ? new URL('./public/images/ka-pods-pods.jpeg', document.baseURI).href
+    : new URL('../public/images/ka-pods-pods.jpeg', import.meta.url).href;
 
 const ICONS = {
   home: '<path d="M3 11.5 12 4l9 7.5v8a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H4.5A1.5 1.5 0 0 1 3 19.5z"/>',
@@ -66,7 +70,7 @@ function renderHome(state) {
     </div>
     <article class="wash-tip">
       <div><span>Mẹo nhỏ hôm nay</span><h4>Viên trước, quần áo sau.</h4><p>Đặt viên dưới đáy lồng giúp màng tan đều hơn.</p></div>
-      <img src="${APP_BASE_URL}images/ka-pods-pods.jpeg" alt="Viên giặt KA Pods xanh trắng" width="522" height="513" />
+      <img src="${APP_IMAGE_URL}" alt="Viên giặt KA Pods xanh trắng" width="522" height="513" />
     </article>
   `;
 }
